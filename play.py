@@ -4,8 +4,17 @@
 # factor --> (number)
 
 
-def error():
-    print("SYNTAX ERROR!")
+def DeclareError():
+    global error_state
+    error_state = True
+
+
+def CheckSyntax():
+    global error_state
+    if(error_state == True):
+        return "SYNTAX ERROR!"
+    else:
+        return "ALL GOOD!"
 
 
 def match(str):
@@ -15,18 +24,20 @@ def match(str):
         # consume and advance
         index += 1
     else:
-        error()
+        DeclareError()
 
 
 def fact(str):
     # expect factor
     global index, ip_string
     match("(")
-    if(str[index].isnumeric()):
+    while(str[index].isnumeric()):
         index += 1
+    if(str[index == ')']): 
+        match(")")
     else:
-        error()
-    match(")")
+        DeclareError()
+    #match(")")
 
 
 def op(str):
@@ -46,14 +57,16 @@ def exp(str):
     op(str[index])
     fact(str)
 
+
 # Main
 index = 0
+error_state = False
 ip_string = input("Please input the string to be parsed: ")
 
 
 # Testing
 exp(ip_string)
-print("ALL GOOD!")  # No syntax errors detected
+CheckSyntax()  # No syntax errors detected
 
 # Debuggging
 print(f"The parser cursor arrived at {index}!")
