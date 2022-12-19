@@ -3,9 +3,6 @@
 # exp --> factor addop factor
 # factor --> (number)
 
-index = 0
-ip_string = "(3)+(5)"
-
 
 def error():
     print("SYNTAX ERROR!")
@@ -48,6 +45,10 @@ def exp(str):
     fact(str)
     op(str[index])
     fact(str)
+
+# Main
+index = 0
+ip_string = input("Please input the string to be parsed: ")
 
 
 # Testing
