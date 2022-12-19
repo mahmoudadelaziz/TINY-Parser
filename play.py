@@ -1,14 +1,17 @@
 # matching function
 index = 0
+scanner_output = "(5)"
+
 
 def match(str):
-    global index
-    if(token[index] == str):
+    global index, scanner_output
+    if(scanner_output[index] == str):
         #consume and advance
         index = index + 1
     else:
-        #error
+        # error
         print("SYNTAX ERROR!")
+
 
 def fact(str):
     global index
@@ -19,6 +22,7 @@ def fact(str):
         print("SYNTAX ERROR!")
     match(")")
 
-token = "(5)"
-fact(token)
-print(index)
+
+fact(scanner_output)
+print(f"The parser cursor arrived at {index}!")
+print("ALL GOOD!")
