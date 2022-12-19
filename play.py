@@ -1,4 +1,8 @@
 # matching function
+# For the grammar:
+# exp --> factor addop factor
+# factor --> (number)
+
 index = 0
 scanner_output = "(5)"
 
