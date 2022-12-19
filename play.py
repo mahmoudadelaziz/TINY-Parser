@@ -4,29 +4,58 @@
 # factor --> (number)
 
 index = 0
-scanner_output = "(5)"
+ip_string = "(3)+(5)"
+
+
+def error():
+    print("SYNTAX ERROR!")
 
 
 def match(str):
-    global index, scanner_output
-    if(scanner_output[index] == str):
-        #consume and advance
-        index = index + 1
+    # meaning: expect str
+    global index, ip_string
+    if(ip_string[index] == str):
+        # consume and advance
+        index += 1
     else:
-        # error
-        print("SYNTAX ERROR!")
+        error()
 
 
 def fact(str):
-    global index
+    # expect factor
+    global index, ip_string
     match("(")
     if(str[index].isnumeric()):
-        index = index + 1
+        index += 1
     else:
-        print("SYNTAX ERROR!")
+        error()
     match(")")
 
 
-fact(scanner_output)
+def op(str):
+    global index, ip_string
+    if(str == '+'):
+        match('+')
+    elif(str == '-'):
+        match('-')
+
+
+def exp(str):
+    global index, ip_string
+    # Expect an expression:
+    # exp --> factor addop factor
+    # factor --> (number)
+    fact(str)
+    op(str[index])
+    fact(str)
+
+
+# Testing
+exp(ip_string)
+print("ALL GOOD!")  # No syntax errors detected
+
+# Debuggging
 print(f"The parser cursor arrived at {index}!")
-print("ALL GOOD!")
+print("\nTokens traversed: ")
+for i in range(index):
+    print(ip_string[i])
