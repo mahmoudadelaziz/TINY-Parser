@@ -7,7 +7,7 @@ assign_stmt --> ID := exp
 read_stmt --> read ID
 write_stmt --> write exp
 exp --> simple_exp [com_op simple_exp]
-comp_op --> < | =
+comparison_op --> < | =
 simple_exp --> term [add_op term]
 add_op --> + | -
 term --> factor [mul_op factor]
