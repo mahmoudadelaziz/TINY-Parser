@@ -53,6 +53,8 @@ def ComparisonOp():
 
 def Factor():
     # factor --> (exp) | number | ID
+    # QUESTION! What can we do about balancing parenthesis? Did our scanner already handle that?
+    # For now, I shall assume that (exp) is simply equivalent to exp
 
 
 def Term():
