@@ -1,5 +1,5 @@
 # Some helper functions
-index = 0  # global cursor (points to the current token)
+cursor = 0  # global cursor (points to the current token)
 error_flag = False  # SyntaxError flag
 
 
@@ -17,21 +17,29 @@ def CheckSyntax():
 
 
 def Match(expectedToken):
-    global index, token
+    global cursor, token, error_flag
     # note: token is the current tokens[index] the parser's global cursor is pointing at
     if(token == expectedToken):
-        # consume and advance
-        index += 1
+        cursor += 1         # Keep moving forward!
     else:
         DeclareError()
 
 
 def MulOp():
     # mul_op --> * | /
+    if(token == '*'):
+        Match('*')
+    elif(token == '/'):
+        Match('/')
+    # else: DeclareError()
 
 
 def AddOp():
     # add_op --> + | -
+    if(token == '+'):
+        Match('+')
+    elif(token == '-'):
+        Match('-')
 
 
 def ComparisonOp():
@@ -80,6 +88,7 @@ def Stmt():
 
 def StmtSequence():
     # stmt_seq --> statement {;statement}
+
 
 def Program():
     # Program --> stmt_seq
