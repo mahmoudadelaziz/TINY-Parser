@@ -11,6 +11,9 @@ def DeclareError():
     error_flag = True
     no_errors += 1
 
+    # Where was the cursor?
+    print(f"Error at cursor = {cursor}")
+
 
 def CheckSyntax():
     global error_flag
@@ -136,34 +139,41 @@ def RepeatStmt():
 
 def AssignStmt():
     # assign_stmt --> identifier := exp
-    if(re.search("^[a-zA-Z]", tokens[cursor][0])):
+    if(tokens[cursor][1] == "IDENTIFIER"):
         Match("IDENTIFIER")
         Match("ASSIGN")
         Exp()
     else:
         DeclareError()
+        print("AssignStmt Failed!")
 
 
 def Stmt():
     # statement --> if_stmt | repeat_stmt | assign_stmt | read_stmt | write_stmt
-    if(tokens[cursor][1] == "IF"):
+    if(tokens[cursor][1] == "IDENTIFIER"):
+        AssignStmt()
+    elif(tokens[cursor][1] == "IF"):
         IfStmt()
     elif(tokens[cursor][1] == "REPEAT"):
         RepeatStmt()
-    elif(tokens[cursor][1] == "IDENTIFIER"):
-        AssignStmt()
     elif(tokens[cursor][1] == "READ"):
         ReadStmt()
     elif(tokens[cursor][1] == "WRITE"):
         WriteStmt()
+    else:
+        print("STMT FAILED")
 
 
 def StmtSequence():
     # stmt_seq --> statement {; statement}
     Stmt()
-    if((tokens[cursor][0] == ';') & (cursor < len(tokens))):  # The problem here?!
-        Match('SEMICOLON')
+    #print("STATEMENT PRINTED!")
+    if(tokens[cursor][1] == "SEMICOLON"):  # The problem here?!
+        Match("SEMICOLON")
         Stmt()
+        #print("STATEMENT SEQUENCE PRINTED!")
+    if(error_flag == True):
+        print("StmtSequence Failed") # THE PROBLEM IS HERE IN THIS FUNCTION
 
 
 def Program():
