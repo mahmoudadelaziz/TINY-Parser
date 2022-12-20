@@ -95,13 +95,13 @@ def Exp():
 def WriteStmt():
     # write_stmt --> write identifier
     Match("WRITE")
-    Match(tokens[cursor][0])  # Identifier's string value
+    Match("IDENTIFIER")  # Identifier's string value
 
 
 def ReadStmt():
     # read_stmt --> read identifier
     Match("READ")
-    Match(tokens[cursor][0])  # Identifier's string value
+    Match("IDENTIFIER")  # Identifier's string value
 
 
 def IfStmt():
@@ -126,7 +126,7 @@ def RepeatStmt():
 def AssignStmt():
     # assign_stmt --> identifier := exp
     if(re.search("^[a-zA-Z]", tokens[cursor][0])):
-        Match(tokens[cursor][0])
+        Match("IDENTIFIER")
         Match("ASSIGN")
         Exp()
     else:
