@@ -30,7 +30,7 @@ def Match(expectedToken):
 def MulOp():
     # mul_op --> * | /
     if(tokens[cursor][0] == '*'):
-        Match('MUL')
+        Match('MULT')
     elif(tokens[cursor][0] == '/'):
         Match('DIV')
     # else: DeclareError()
@@ -62,7 +62,7 @@ def Factor():
         Match("IDENTIFIER")  # if identifier, match and move on
     elif(tokens[cursor][0] == '('):
         Match('OPENBRACKET')
-        Exp()  # ?
+        Exp()
         Match('CLOSEDBRACKET')
     else:
         DeclareError()
@@ -70,7 +70,8 @@ def Factor():
 
 def Term():
     # term --> factor [mul_op factor]
-    Match(Factor)
+    # Match(Factor) #?
+    Factor()
     if((tokens[cursor][0] == '*') | (tokens[cursor][0] == '/')):
         MulOp()
         Factor()
@@ -87,7 +88,7 @@ def SimpleExp():
 def Exp():
     # exp --> simple_exp [ComparisonOp simple_exp]
     SimpleExp()
-    if((tokens[cursor][0] == '<') | (tokens[cursor][0] == '>')):
+    if((tokens[cursor][0] == '<') | (tokens[cursor][0] == '=')):
         ComparisonOp()
         SimpleExp()
 
@@ -148,9 +149,9 @@ def Stmt():
 
 
 def StmtSequence():
-    # stmt_seq --> statement {;statement}
+    # stmt_seq --> statement {; statement}
     Stmt()
-    if(tokens[cursor][0] == ';'):
+    if((tokens[cursor][0] == ';') & (cursor < len(tokens))):
         Match('SEMICOLON')
         Stmt()
 
