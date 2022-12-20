@@ -44,6 +44,11 @@ def AddOp():
 
 def ComparisonOp():
     # comparison_op --> < | =
+    if(token == '<'):
+        Match('<')
+    elif(token == '>'):
+        Match('>')
+
 
 
 def Factor():
