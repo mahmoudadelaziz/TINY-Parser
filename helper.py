@@ -21,7 +21,7 @@ def CheckSyntax():
 def Match(expectedToken):
     global cursor, tokens
     # note: token is the current tokens[index] the parser's global cursor is pointing at
-    if(tokens[cursor][0] == expectedToken):
+    if(tokens[cursor][1] == expectedToken):
         cursor += 1         # Keep moving forward!
     else:
         DeclareError()
@@ -30,26 +30,26 @@ def Match(expectedToken):
 def MulOp():
     # mul_op --> * | /
     if(tokens[cursor][0] == '*'):
-        Match('*')
+        Match('MUL')
     elif(tokens[cursor][0] == '/'):
-        Match('/')
+        Match('DIV')
     # else: DeclareError()
 
 
 def AddOp():
     # add_op --> + | -
     if(tokens[cursor][0] == '+'):
-        Match('+')
+        Match('PLUS')
     elif(tokens[cursor][0] == '-'):
-        Match('-')
+        Match('MINUS')
 
 
 def ComparisonOp():
     # comparison_op --> < | =
     if(tokens[cursor][0] == '<'):
-        Match('<')
-    elif(tokens[cursor][0] == '>'):
-        Match('>')
+        Match('LESSTHAN')
+    elif(tokens[cursor][0] == '='):
+        Match('EQUAL')
 
 
 def Factor():
@@ -57,13 +57,13 @@ def Factor():
     # QUESTION! What can we do about balancing parenthesis? Did our scanner already handle that?
     # For now, I shall assume that (exp) is simply equivalent to exp
     if(re.search("^\\d+$", tokens[cursor][0])):
-        Match(tokens[cursor][0])
+        Match("NUMBER")
     elif(re.search("^[a-zA-Z]", tokens[cursor][0])):
-        Match(tokens[cursor][0])  # if identifier, match and move on
+        Match("IDENTIFIER")  # if identifier, match and move on
     elif(tokens[cursor][0] == '('):
-        Match('(')
+        Match('OPENBRACKET')
         Exp()  # ?
-        Match(')')
+        Match('CLOSEDBRACKET')
     else:
         DeclareError()
 
@@ -94,32 +94,32 @@ def Exp():
 
 def WriteStmt():
     # write_stmt --> write identifier
-    Match("write")
+    Match("WRITE")
     Match(tokens[cursor][0])  # Identifier's string value
 
 
 def ReadStmt():
     # read_stmt --> read identifier
-    Match("read")
+    Match("READ")
     Match(tokens[cursor][0])  # Identifier's string value
 
 
 def IfStmt():
     # if_stmt --> if exp then stmt_seq [else stmt_seq] end
-    Match("if")
+    Match("IF")
     Exp()
-    Match("then")
+    Match("THEN")
     StmtSequence()
     if(tokens[cursor][0] == "else"):
         StmtSequence()
-    Match("end")
+    Match("END")
 
 
 def RepeatStmt():
     # repeat_stmt --> repeat stmt_seq until exp
-    Match("repeat")
+    Match("REPEAT")
     StmtSequence()
-    Match("until")
+    Match("UNTIL")
     Exp()
 
 
@@ -127,7 +127,7 @@ def AssignStmt():
     # assign_stmt --> identifier := exp
     if(re.search("^[a-zA-Z]", tokens[cursor][0])):
         Match(tokens[cursor][0])
-        Match(":=")
+        Match("ASSIGN")
         Exp()
     else:
         DeclareError()
@@ -151,7 +151,7 @@ def StmtSequence():
     # stmt_seq --> statement {;statement}
     Stmt()
     if(tokens[cursor][0] == ';'):
-        Match(';')
+        Match('SEMICOLON')
         Stmt()
 
 
