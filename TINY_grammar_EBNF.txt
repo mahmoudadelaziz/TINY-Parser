@@ -1,0 +1,15 @@
+program --> stmt_seq
+stmt_seq --> statement {;statement}
+statement --> if_stmt | repeat_stmt | assign_stmt | read_stmt | write_stmt 
+if_stmt --> if exp then stmt_seq [else stmt_seq] end
+repeat_stmt --> repeat stmt_seq until exp
+assign_stmt --> ID := exp
+read_stmt --> read ID
+write_stmt --> write exp
+exp --> simple_exp [com_op simple_exp]
+comp_op --> < | =
+simple_exp --> term [add_op term]
+add_op --> + | -
+term --> factor [mul_op factor]
+mul_op --> * | /
+factor --> (exp) | number | ID
