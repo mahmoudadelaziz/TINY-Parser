@@ -1,5 +1,5 @@
 # Imports
-import helper # some helper functions
+from helper import * # some helper functions
 
 # Taking input
 print("Please Enter the name of the tokens list file (with extension, like tokens.txt): ")
@@ -15,6 +15,10 @@ tokens = [line.split(r',') for line in Lines]
 tokens = [[item[0].strip(), item[1].strip()] for item in tokens]
 
 
+# Testing
+Program()
+CheckSyntax()
+
 
 # Debugging
-print(tokens)
+#print(tokens)

@@ -13,9 +13,9 @@ def DeclareError():
 def CheckSyntax():
     global error_flag
     if(error_flag == True):
-        print("SYNTAX ERROR!")
+        print("SYNTAX ERROR!\n")
     else:
-        print("ALL GOOD!")
+        print("ALL GOOD!\n")
 
 
 def Match(expectedToken):
@@ -158,3 +158,37 @@ def StmtSequence():
 def Program():
     # Program --> stmt_seq
     StmtSequence()
+
+
+if __name__ == "__main__":
+
+    # Taking input
+    print("Please Enter the name of the tokens list file (with extension, like tokens.txt): ")
+    # input_name = input()
+    input_name = "input.txt"
+    Source_Code = open(input_name, 'r')
+    # Read the file line by line (and insert each line in the list)
+    Lines = Source_Code.readlines()
+    # Now we have a list of lines (as strings), we can close the file
+    Source_Code.close()
+    # organizing tokens as a long list of lists [[stringValue, type], [stringValue1, type1], etc.]
+    tokens = [line.split(r',') for line in Lines]
+    # cleaning up the tokens list (of spaces and new line chars, etc.)
+    tokens = [[item[0].strip(), item[1].strip()] for item in tokens]
+
+    # Testing
+    Program()
+    CheckSyntax()
+
+    # Debugging
+    print(f"Number of tokens = {len(tokens)}\n")
+
+    #print(f"All tokens:\n{tokens}\n")
+
+    print(f"Cursor arrived at: {cursor}\n")
+
+    print(f"Current token: {tokens[cursor]}\n")
+
+    print("Tokens matched successfully:")
+    for i in range(cursor):
+        print(f"{i}: {tokens[i]}")
