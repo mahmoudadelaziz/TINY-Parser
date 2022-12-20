@@ -107,9 +107,10 @@ def Exp():
 
 
 def WriteStmt():
-    # write_stmt --> write identifier
+    # write_stmt --> write exp
+    print("!----------HOORAH!----------")
     Match("WRITE")
-    Match("IDENTIFIER")  # Identifier's string value
+    Exp()
 
 
 def ReadStmt():
