@@ -15,7 +15,7 @@ def DeclareError():
 def CheckSyntax():
     global error_flag
     if(error_flag == True):
-        print("SYNTAX ERROR!\n")
+        print("SYNTAX ERROR(S) DETECTED!\n")
     else:
         print("ALL GOOD!\n")
 
@@ -174,7 +174,7 @@ def Program():
 if __name__ == "__main__":
 
     # Taking input
-    print("Please Enter the name of the tokens list file (with extension, like tokens.txt): ")
+    # print("Please Enter the name of the tokens list file (with extension, like tokens.txt): ")
     # input_name = input()
     input_name = "input.txt"
     Source_Code = open(input_name, 'r')
@@ -198,8 +198,14 @@ if __name__ == "__main__":
     print(f"Number of errors detected = {no_errors}")
     print(f"Current token: {tokens[cursor]}")
 
-    print("--" * 40)
-    print("Tokens matched successfully:")
+    # print("--" * 40)
+    # print("Tokens matched successfully:")
+    # for i in range(cursor):
+    #     print(f"{i}: {tokens[i]}")
+
+    outFile = open("TokensMatched.txt", "w")
     for i in range(cursor):
-        print(f"{i}: {tokens[i]}")
+        outFile.write(f"{tokens[i][0]}, {tokens[i][1]}\n")
+    outFile.close()
+
     print("**" * 75)

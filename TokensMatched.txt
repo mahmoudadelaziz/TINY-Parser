@@ -26,7 +26,3 @@ until, UNTIL
 x, IDENTIFIER
 =, EQUAL
 0, NUMBER
-;, SEMICOLON
-write, WRITE
-fact, IDENTIFIER
-end, END

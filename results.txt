@@ -8,7 +8,6 @@ x, IDENTIFIER
 then, THEN
 fact, IDENTIFIER
 :=, ASSIGN
-1, NUMBER
 ;, SEMICOLON
 repeat, REPEAT
 fact, IDENTIFIER
@@ -26,7 +25,3 @@ until, UNTIL
 x, IDENTIFIER
 =, EQUAL
 0, NUMBER
-;, SEMICOLON
-write, WRITE
-fact, IDENTIFIER
-end, END
