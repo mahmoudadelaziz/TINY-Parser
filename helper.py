@@ -3,7 +3,7 @@ import re
 # Some helper functions
 cursor = 0  # global cursor (points to the current token)
 error_flag = False  # SyntaxError flag
-no_errors = 0
+no_errors = 0  # Number of errors detected
 
 
 def DeclareError():
@@ -21,10 +21,12 @@ def CheckSyntax():
 
 
 def Match(expectedToken):
-    global cursor, tokens
+    global cursor
     # note: token is the current tokens[index] the parser's global cursor is pointing at
     if(tokens[cursor][1] == expectedToken):
         cursor += 1         # Keep moving forward!
+    elif(tokens[cursor][0] == expectedToken):
+        cursor += 1
     else:
         DeclareError()
 
@@ -35,7 +37,8 @@ def MulOp():
         Match('MULT')
     elif(tokens[cursor][0] == '/'):
         Match('DIV')
-    # else: DeclareError()
+    else:
+        print("Failed to match Mul-Operator!")
 
 
 def AddOp():
@@ -44,6 +47,8 @@ def AddOp():
         Match('PLUS')
     elif(tokens[cursor][0] == '-'):
         Match('MINUS')
+    else:
+        print("Failed to match Add-Operator!")
 
 
 def ComparisonOp():
@@ -52,6 +57,8 @@ def ComparisonOp():
         Match('LESSTHAN')
     elif(tokens[cursor][0] == '='):
         Match('EQUAL')
+    else:
+        print("Failed to match Comp-Operator!")
 
 
 def Factor():
@@ -68,6 +75,7 @@ def Factor():
         Match('CLOSEDBRACKET')
     else:
         DeclareError()
+        print(f"Failed to match Factor at index {cursor}: {tokens[cursor]}")
 
 
 def Term():
@@ -153,7 +161,7 @@ def Stmt():
 def StmtSequence():
     # stmt_seq --> statement {; statement}
     Stmt()
-    if((tokens[cursor][0] == ';') & (cursor < len(tokens))): # The problem here?!
+    if((tokens[cursor][0] == ';') & (cursor < len(tokens))):  # The problem here?!
         Match('SEMICOLON')
         Stmt()
 
@@ -184,16 +192,14 @@ if __name__ == "__main__":
     CheckSyntax()
 
     # Debugging
-    print(f"Number of tokens = {len(tokens)}\n")
-
+    print(f"Number of tokens = {len(tokens)}")
     #print(f"All tokens:\n{tokens}\n")
+    print(f"Cursor arrived at: {cursor}")
+    print(f"Number of errors detected = {no_errors}")
+    print(f"Current token: {tokens[cursor]}")
 
-    print(f"Cursor arrived at: {cursor}\n")
-    
-    print(f"Number of errors detected = {no_errors}\n")
-
-    print(f"Current token: {tokens[cursor]}\n")
-
+    print("--" * 40)
     print("Tokens matched successfully:")
     for i in range(cursor):
         print(f"{i}: {tokens[i]}")
+    print("**" * 75)
