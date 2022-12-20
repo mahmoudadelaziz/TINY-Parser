@@ -148,13 +148,13 @@ def Stmt():
     # statement --> if_stmt | repeat_stmt | assign_stmt | read_stmt | write_stmt
     if(tokens[cursor][0] == "if"):
         IfStmt()
-    if(tokens[cursor][0] == "repeat"):
+    elif(tokens[cursor][0] == "repeat"):
         RepeatStmt()
-    if(re.search("^[a-zA-Z]", tokens[cursor][0])):
+    elif(tokens[cursor][1] == "IDENTIFIER"):
         AssignStmt()
-    if(tokens[cursor][0] == "read"):
+    elif(tokens[cursor][0] == "read"):
         ReadStmt()
-    if(tokens[cursor][0] == "write"):
+    elif(tokens[cursor][0] == "write"):
         WriteStmt()
 
 
@@ -188,6 +188,7 @@ if __name__ == "__main__":
     tokens = [[item[0].strip(), item[1].strip()] for item in tokens]
 
     # Testing
+    print("**" * 75)
     Program()
     CheckSyntax()
 
