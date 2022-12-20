@@ -76,9 +76,9 @@ def Factor():
         Match('OPENBRACKET')
         Exp()
         Match('CLOSEDBRACKET')
-    # else:
-    #     DeclareError()
-    #     print(f"Failed to match Factor at index {cursor}: {tokens[cursor]}")
+    else:
+        DeclareError()
+        print(f"Failed to match Factor at index {cursor}: {tokens[cursor]}")
 
 
 def Term():
@@ -127,7 +127,7 @@ def IfStmt():
     StmtSequence()
     if(tokens[cursor][0] == "else"):
         StmtSequence()
-    Match("END")
+    StmtSequence()
 
 
 def RepeatStmt():
@@ -179,6 +179,8 @@ def StmtSequence():
         Match("SEMICOLON")
         Stmt()
         print(f"STATEMENT SEQUENCE MATCH ENDED AT #{cursor}!")  # Debugging
+    elif(tokens[cursor][1] == "END"):
+        print("END")
     else:
         # THE PROBLEM IS HERE IN THIS FUNCTION
         print(f"StmtSequence() Failed at cursor #{cursor}")
@@ -216,11 +218,6 @@ if __name__ == "__main__":
     print(f"Cursor arrived at: {cursor}")
     print(f"Number of errors detected = {no_errors}")
     print(f"Current token: {tokens[cursor]}")
-
-    # print("--" * 40)
-    # print("Tokens matched successfully:")
-    # for i in range(cursor):
-    #     print(f"{i}: {tokens[i]}")
 
     outFile = open("TokensMatched.txt", "w")
     for i in range(cursor):
