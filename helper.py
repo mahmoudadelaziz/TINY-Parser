@@ -3,11 +3,13 @@ import re
 # Some helper functions
 cursor = 0  # global cursor (points to the current token)
 error_flag = False  # SyntaxError flag
+no_errors = 0
 
 
 def DeclareError():
-    global error_flag
+    global error_flag, no_errors
     error_flag = True
+    no_errors += 1
 
 
 def CheckSyntax():
@@ -151,7 +153,7 @@ def Stmt():
 def StmtSequence():
     # stmt_seq --> statement {; statement}
     Stmt()
-    if((tokens[cursor][0] == ';') & (cursor < len(tokens))):
+    if((tokens[cursor][0] == ';') & (cursor < len(tokens))): # The problem here?!
         Match('SEMICOLON')
         Stmt()
 
@@ -187,6 +189,8 @@ if __name__ == "__main__":
     #print(f"All tokens:\n{tokens}\n")
 
     print(f"Cursor arrived at: {cursor}\n")
+    
+    print(f"Number of errors detected = {no_errors}\n")
 
     print(f"Current token: {tokens[cursor]}\n")
 
