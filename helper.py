@@ -76,9 +76,9 @@ def Factor():
         Match('OPENBRACKET')
         Exp()
         Match('CLOSEDBRACKET')
-    else:
-        DeclareError()
-        print(f"Failed to match Factor at index {cursor}: {tokens[cursor]}")
+    # else:
+    #     DeclareError()
+    #     print(f"Failed to match Factor at index {cursor}: {tokens[cursor]}")
 
 
 def Term():
@@ -137,7 +137,8 @@ def RepeatStmt():
     Match("UNTIL")
     Exp()
     if(cursor < (len(tokens) - 1)):
-        Match("SEMICOLON") # Ad-hoc solution to the problem (Check later if error)
+        # Ad-hoc solution to the problem (Check later if error)
+        Match("SEMICOLON")
 
 
 def AssignStmt():
@@ -163,7 +164,8 @@ def Stmt():
         print(f"At #{cursor} HEY READ!")
         ReadStmt()
     elif(tokens[cursor][1] == "WRITE"):
-        print(f"At #{cursor} HEY WRITE!") # THE PROBLEM NOW: THE CODE DOES NOT ENTER THIS CONDITION BODY
+        # THE PROBLEM NOW: THE CODE DOES NOT ENTER THIS CONDITION BODY
+        print(f"At #{cursor} HEY WRITE!")
         WriteStmt()
     else:
         print(f"Stmt() FAILED at cursor #{cursor}")
@@ -176,9 +178,10 @@ def StmtSequence():
     if(tokens[cursor][1] == "SEMICOLON"):  # The problem here?! YES, Most likely
         Match("SEMICOLON")
         Stmt()
-        print(f"STATEMENT SEQUENCE MATCH ENDED AT #{cursor}!") # Debugging
+        print(f"STATEMENT SEQUENCE MATCH ENDED AT #{cursor}!")  # Debugging
     else:
-        print(f"StmtSequence() Failed at cursor #{cursor}") # THE PROBLEM IS HERE IN THIS FUNCTION
+        # THE PROBLEM IS HERE IN THIS FUNCTION
+        print(f"StmtSequence() Failed at cursor #{cursor}")
 
 
 def Program():
