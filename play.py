@@ -61,15 +61,15 @@ def exp(str):
 # Main
 index = 0
 error_state = False
-ip_string = input("Please input the string to be parsed: ")
+# ip_string = input("Please input the string to be parsed: ")
 
 
-# Testing
-exp(ip_string)
-CheckSyntax()  # No syntax errors detected
+# # Testing
+# exp(ip_string)
+# CheckSyntax()  # No syntax errors detected
 
-# Debuggging
-print(f"The parser cursor arrived at {index}!")
-print("\nTokens traversed: ")
-for i in range(index):
-    print(ip_string[i])
+# # Debuggging
+# print(f"The parser cursor arrived at {index}!")
+# print("\nTokens traversed: ")
+# for i in range(index):
+#     print(ip_string[i])
