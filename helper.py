@@ -135,6 +135,8 @@ def RepeatStmt():
     StmtSequence()
     Match("UNTIL")
     Exp()
+    if(cursor < (len(tokens) - 1)):
+        Match("SEMICOLON")
 
 
 def AssignStmt():
@@ -143,14 +145,14 @@ def AssignStmt():
         Match("IDENTIFIER")
         Match("ASSIGN")
         Exp()
-    else:
+    if(error_flag == True):
         DeclareError()
-        print("AssignStmt Failed!")
+        print(f"AssignStmt() Failed at {cursor}!")
 
 
 def Stmt():
     # statement --> if_stmt | repeat_stmt | assign_stmt | read_stmt | write_stmt
-    if(tokens[cursor][1] == "IDENTIFIER"):
+    if((tokens[cursor][1] == "IDENTIFIER") & (tokens[cursor+1][1] == "ASSIGN")):
         AssignStmt()
     elif(tokens[cursor][1] == "IF"):
         IfStmt()
@@ -160,8 +162,8 @@ def Stmt():
         ReadStmt()
     elif(tokens[cursor][1] == "WRITE"):
         WriteStmt()
-    else:
-        print("STMT FAILED")
+    if(error_flag == True):
+        print(f"Stmt() FAILED at cursor #{cursor}")
 
 
 def StmtSequence():
@@ -173,7 +175,7 @@ def StmtSequence():
         Stmt()
         #print("STATEMENT SEQUENCE PRINTED!")
     if(error_flag == True):
-        print("StmtSequence Failed") # THE PROBLEM IS HERE IN THIS FUNCTION
+        print(f"StmtSequence() Failed at cursor #{cursor}") # THE PROBLEM IS HERE IN THIS FUNCTION
 
 
 def Program():
