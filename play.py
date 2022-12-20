@@ -33,11 +33,11 @@ def fact(str):
     match("(")
     while(str[index].isnumeric()):
         index += 1
-    if(str[index == ')']): 
+    if(str[index == ')']):
         match(")")
     else:
         DeclareError()
-    #match(")")
+    # match(")")
 
 
 def op(str):
