@@ -137,7 +137,7 @@ def RepeatStmt():
     Match("UNTIL")
     Exp()
     if(cursor < (len(tokens) - 1)):
-        Match("SEMICOLON")
+        Match("SEMICOLON") # Ad-hoc solution to the problem (Check later if error)
 
 
 def AssignStmt():
@@ -146,24 +146,26 @@ def AssignStmt():
         Match("IDENTIFIER")
         Match("ASSIGN")
         Exp()
-    if(error_flag == True):
-        DeclareError()
-        print(f"AssignStmt() Failed at {cursor}!")
 
 
 def Stmt():
     # statement --> if_stmt | repeat_stmt | assign_stmt | read_stmt | write_stmt
     if((tokens[cursor][1] == "IDENTIFIER") & (tokens[cursor+1][1] == "ASSIGN")):
+        print(f"At #{cursor} HEY ASSIGN!")
         AssignStmt()
     elif(tokens[cursor][1] == "IF"):
+        print(f"At #{cursor} HEY IF!")
         IfStmt()
     elif(tokens[cursor][1] == "REPEAT"):
+        print(f"At #{cursor} HEY REPEAT!")
         RepeatStmt()
     elif(tokens[cursor][1] == "READ"):
+        print(f"At #{cursor} HEY READ!")
         ReadStmt()
     elif(tokens[cursor][1] == "WRITE"):
+        print(f"At #{cursor} HEY WRITE!") # THE PROBLEM NOW: THE CODE DOES NOT ENTER THIS CONDITION BODY
         WriteStmt()
-    if(error_flag == True):
+    else:
         print(f"Stmt() FAILED at cursor #{cursor}")
 
 
@@ -171,11 +173,11 @@ def StmtSequence():
     # stmt_seq --> statement {; statement}
     Stmt()
     #print("STATEMENT PRINTED!")
-    if(tokens[cursor][1] == "SEMICOLON"):  # The problem here?!
+    if(tokens[cursor][1] == "SEMICOLON"):  # The problem here?! YES, Most likely
         Match("SEMICOLON")
         Stmt()
-        #print("STATEMENT SEQUENCE PRINTED!")
-    if(error_flag == True):
+        print(f"STATEMENT SEQUENCE MATCH ENDED AT #{cursor}!") # Debugging
+    else:
         print(f"StmtSequence() Failed at cursor #{cursor}") # THE PROBLEM IS HERE IN THIS FUNCTION
 
 
