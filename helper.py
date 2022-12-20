@@ -146,15 +146,15 @@ def AssignStmt():
 
 def Stmt():
     # statement --> if_stmt | repeat_stmt | assign_stmt | read_stmt | write_stmt
-    if(tokens[cursor][0] == "if"):
+    if(tokens[cursor][1] == "IF"):
         IfStmt()
-    elif(tokens[cursor][0] == "repeat"):
+    elif(tokens[cursor][1] == "REPEAT"):
         RepeatStmt()
     elif(tokens[cursor][1] == "IDENTIFIER"):
         AssignStmt()
-    elif(tokens[cursor][0] == "read"):
+    elif(tokens[cursor][1] == "READ"):
         ReadStmt()
-    elif(tokens[cursor][0] == "write"):
+    elif(tokens[cursor][1] == "WRITE"):
         WriteStmt()
 
 
