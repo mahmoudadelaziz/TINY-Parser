@@ -72,7 +72,7 @@ def Factor():
     # factor --> (exp) | number | ID
     # QUESTION! What can we do about balancing parenthesis? Did our scanner already handle that?
     # For now, I shall assume that (exp) is simply equivalent to exp
-    if(re.search("^\\d+$", tokens[cursor][0])):
+    if(tokens[cursor][1] == "NUMBER"):
         Match("NUMBER")
     elif(re.search("^[a-zA-Z]", tokens[cursor][0])):
         Match("IDENTIFIER")  # if identifier, match and move on
@@ -89,9 +89,11 @@ def Term():
     # term --> factor [mul_op factor]
     # Match(Factor) #?
     Factor()
-    if((tokens[cursor][0] == '*') | (tokens[cursor][0] == '/')):
-        MulOp()
-        Factor()
+    print(f"The cursor now is at {cursor}") # Debugging
+    if((cursor < (len(tokens)-1))): # index safeguard (Debugging)
+        if((tokens[cursor][0] == '*') | (tokens[cursor][0] == '/')):
+            MulOp()
+            Factor()
 
 
 def SimpleExp():
@@ -146,15 +148,15 @@ def RepeatStmt():
 
 def AssignStmt():
     # assign_stmt --> identifier := exp
-    if(tokens[cursor][1] == "IDENTIFIER"):
-        Match("IDENTIFIER")
-        Match("ASSIGN")
-        Exp()
+    Match("IDENTIFIER")
+    Match("ASSIGN")
+    Exp()
 
 
 def Stmt():
     # statement --> if_stmt | repeat_stmt | assign_stmt | read_stmt | write_stmt
     if((tokens[cursor][1] == "IDENTIFIER") & (tokens[cursor+1][1] == "ASSIGN")):
+        print(f"Why is the program here at #{cursor}?!") # Debugging. It should be at 3
         AssignStmt()
     elif(tokens[cursor][1] == "IF"):
         IfStmt()
@@ -188,12 +190,15 @@ def Program():
     StmtSequence()
 
 def Parse(LinesEntered):
-    global tokens, error_flag, cursor
+    global tokens
     tokens = LinesEntered
+    print("GOT HERE BEFORE PROGRAM()!") # Debugging -- The code does get here!
     Program()
+    print("PROGRAM FUNCTION COMMENCED!") # Debugging
     if(error_flag == False):
-        cursor = 0  # Reset for reuse
-        tokens = []  # Reset for reuse
+        #cursor = 0  # Reset for reuse
+        #tokens = []  # Reset for reuse
+        print(f"[For Parser() in helper]Cursor's final value: {cursor}")
         return "ALL GOOD!"
     else:
         return f"Error matching token: {tokens[cursor]}!"
@@ -210,6 +215,7 @@ def GetPlainTextFromFile(FileName):
 
 
 def GetTokensListFromPlainText(ourTokenText):
+    global tokens
     # Get a list of lines (tokens list) from a plainText input string
     # Arg: PlainText string
     # Return: list of lists of strings: [[tval, ttype], [tval, ttype], [tval, ttype], ...]

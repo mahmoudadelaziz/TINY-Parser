@@ -61,15 +61,16 @@ class Ui_MainWindow(object):
 
     def Parseclicked(self):
         # The TINY Parser's Program() function goes here!
-        try:
+        # try:
             self.InputTokensText = self.InputTokens.toPlainText() # taking TokenText from text box
             self.TokensPlainText = self.InputTokensText # TokenText from text box
             self.tokensList = GetTokensListFromPlainText(self.TokensPlainText) # Making list of tokens
             self.SyntaxCheckingResult.setText(Parse(self.tokensList))
             self.update()
-        except IndexError:
-            self.SyntaxCheckingResult.setText(f"Cursor stopped at {str(cursor)}")
-            print(f"Tokens read: {self.tokensList}")
+            print(f"[FOR GUI FILE] Cursor standing at #{cursor}")
+        # except IndexError:
+        #     self.SyntaxCheckingResult.setText(f"Cursor stopped at {str(cursor)}")
+        #     print(f"Tokens read: {self.tokensList}")
     # --------------------------------- My code block END ---------------------------------
 
     def retranslateUi(self, MainWindow):
