@@ -1,3 +1,7 @@
+# This script contains some helper functions and definitions
+# for our Parser code
+
+# Imports
 import re
 
 # Some helper functions
@@ -108,7 +112,6 @@ def Exp():
 
 def WriteStmt():
     # write_stmt --> write exp
-    print("!----------HOORAH!----------")
     Match("WRITE")
     Exp()
 
@@ -152,20 +155,15 @@ def AssignStmt():
 def Stmt():
     # statement --> if_stmt | repeat_stmt | assign_stmt | read_stmt | write_stmt
     if((tokens[cursor][1] == "IDENTIFIER") & (tokens[cursor+1][1] == "ASSIGN")):
-        print(f"At #{cursor} HEY ASSIGN!")
         AssignStmt()
     elif(tokens[cursor][1] == "IF"):
-        print(f"At #{cursor} HEY IF!")
         IfStmt()
     elif(tokens[cursor][1] == "REPEAT"):
-        print(f"At #{cursor} HEY REPEAT!")
         RepeatStmt()
     elif(tokens[cursor][1] == "READ"):
-        print(f"At #{cursor} HEY READ!")
         ReadStmt()
     elif(tokens[cursor][1] == "WRITE"):
         # THE PROBLEM NOW: THE CODE DOES NOT ENTER THIS CONDITION BODY
-        print(f"At #{cursor} HEY WRITE!")
         WriteStmt()
     else:
         print(f"Stmt() FAILED at cursor #{cursor}")
@@ -178,9 +176,8 @@ def StmtSequence():
     if(tokens[cursor][1] == "SEMICOLON"):  # The problem here?! YES, Most likely
         Match("SEMICOLON")
         Stmt()
-        print(f"STATEMENT SEQUENCE MATCH ENDED AT #{cursor}!")  # Debugging
     elif(tokens[cursor][1] == "END"):
-        print("END")
+        Match("END")
     else:
         # THE PROBLEM IS HERE IN THIS FUNCTION
         print(f"StmtSequence() Failed at cursor #{cursor}")
@@ -190,38 +187,37 @@ def Program():
     # Program --> stmt_seq
     StmtSequence()
 
-
-if __name__ == "__main__":
-
-    # Taking input
-    # print("Please Enter the name of the tokens list file (with extension, like tokens.txt): ")
-    # input_name = input()
-    input_name = "input.txt"
-    Source_Code = open(input_name, 'r')
-    # Read the file line by line (and insert each line in the list)
-    Lines = Source_Code.readlines()
-    # Now we have a list of lines (as strings), we can close the file
-    Source_Code.close()
-    # organizing tokens as a long list of lists [[stringValue, type], [stringValue1, type1], etc.]
-    tokens = [line.split(r',') for line in Lines]
-    # cleaning up the tokens list (of spaces and new line chars, etc.)
-    tokens = [[item[0].strip(), item[1].strip()] for item in tokens]
-
-    # Testing
-    print("**" * 75)
+def Parse(LinesEntered):
+    global tokens, error_flag, cursor
+    tokens = LinesEntered
     Program()
-    CheckSyntax()
+    if(error_flag == False):
+        cursor = 0  # Reset for reuse
+        tokens = []  # Reset for reuse
+        return "ALL GOOD!"
+    else:
+        return f"Error matching token: {tokens[cursor]}!"
 
-    # Debugging
-    print(f"Number of tokens = {len(tokens)}")
-    #print(f"All tokens:\n{tokens}\n")
-    print(f"Cursor arrived at: {cursor}")
-    print(f"Number of errors detected = {no_errors}")
-    print(f"Current token: {tokens[cursor]}")
 
-    outFile = open("TokensMatched.txt", "w")
-    for i in range(cursor):
-        outFile.write(f"{tokens[i][0]}, {tokens[i][1]}\n")
-    outFile.close()
+def GetPlainTextFromFile(FileName):
+    # Read text from a file
+    # Arg: File Name
+    # Return: string containg the text read
+    TokenText = open(FileName, 'r')
+    Txt = TokenText.read()
+    TokenText.close()
+    return Txt
 
-    print("**" * 75)
+
+def GetTokensListFromPlainText(ourTokenText):
+    # Get a list of lines (tokens list) from a plainText input string
+    # Arg: PlainText string
+    # Return: list of lists of strings: [[tval, ttype], [tval, ttype], [tval, ttype], ...]
+    tokens = ourTokenText.splitlines()
+    tokens = [item.split(r',') for item in tokens]
+    tokens = [[item[0].strip(), item[1].strip()] for item in tokens]
+    return tokens
+
+
+# Testing Code
+# print("**" * 75)
