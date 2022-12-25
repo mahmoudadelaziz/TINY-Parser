@@ -14,9 +14,8 @@ def DeclareError():
     global error_flag, no_errors
     error_flag = True
     no_errors += 1
-
     # Where was the cursor?
-    print(f"Error at cursor = {cursor}")
+    print(f"SYNTAX ERROR on line #{cursor + 1}")
 
 
 def CheckSyntax():
@@ -30,7 +29,7 @@ def CheckSyntax():
 def Match(expectedToken):
     global cursor
     # note: token is the current tokens[index] the parser's global cursor is pointing at
-    if((cursor < (len(tokens)-1))): # index safeguard (Debugging)
+    if((cursor < (len(tokens)-1))):  # index safeguard (Debugging)
         if(tokens[cursor][1] == expectedToken):
             cursor += 1         # Keep moving forward!
         elif(tokens[cursor][0] == expectedToken):
@@ -90,8 +89,8 @@ def Term():
     # term --> factor [mul_op factor]
     # Match(Factor) #?
     Factor()
-    print(f"The cursor now is at {cursor}") # Debugging
-    if((cursor < (len(tokens)-1))): # index safeguard (Debugging)
+    print(f"The cursor now is at {cursor}")  # Debugging
+    if((cursor < (len(tokens)-1))):  # index safeguard (Debugging)
         if((tokens[cursor][0] == '*') | (tokens[cursor][0] == '/')):
             MulOp()
             Factor()
@@ -100,7 +99,7 @@ def Term():
 def SimpleExp():
     # simple_exp --> term [add_op term]
     Term()
-    if((cursor < (len(tokens)-1))): # index safeguard (Debugging)
+    if((cursor < (len(tokens)-1))):  # index safeguard (Debugging)
         if((tokens[cursor][0] == '+') | (tokens[cursor][0] == '-')):
             AddOp()
             Term()
@@ -109,7 +108,7 @@ def SimpleExp():
 def Exp():
     # exp --> simple_exp [ComparisonOp simple_exp]
     SimpleExp()
-    if((cursor < (len(tokens)-1))): # index safeguard (Debugging)
+    if((cursor < (len(tokens)-1))):  # index safeguard (Debugging)
         if((tokens[cursor][0] == '<') | (tokens[cursor][0] == '=')):
             ComparisonOp()
             SimpleExp()
@@ -158,9 +157,10 @@ def AssignStmt():
 
 def Stmt():
     # statement --> if_stmt | repeat_stmt | assign_stmt | read_stmt | write_stmt
-    if((cursor < (len(tokens)-1))): # index safeguard (Debugging)
+    if((cursor < (len(tokens)-1))):  # index safeguard (Debugging)
         if((tokens[cursor][1] == "IDENTIFIER") & (tokens[cursor+1][1] == "ASSIGN")):
-            print(f"Why is the program here at #{cursor}?!") # Debugging. It should be at 3
+            # Debugging. It should be at 3
+            print(f"Why is the program here at #{cursor}?!")
             AssignStmt()
         elif(tokens[cursor][1] == "IF"):
             IfStmt()
@@ -179,7 +179,7 @@ def StmtSequence():
     # stmt_seq --> statement {; statement}
     Stmt()
     #print("STATEMENT PRINTED!")
-    if((cursor < (len(tokens)-1))): # index safeguard (Debugging)
+    if((cursor < (len(tokens)-1))):  # index safeguard (Debugging)
         if(tokens[cursor][1] == "SEMICOLON"):  # The problem here?! YES, Most likely
             Match("SEMICOLON")
             Stmt()
@@ -196,19 +196,20 @@ def Program():
     # Program --> stmt_seq
     StmtSequence()
 
+
 def Parse(LinesEntered):
     global tokens
     tokens = LinesEntered
-    print("GOT HERE BEFORE PROGRAM()!") # Debugging -- The code does get here!
+    print("GOT HERE BEFORE PROGRAM()!")  # Debugging -- The code does get here!
     Program()
-    print("PROGRAM FUNCTION COMMENCED!") # Debugging
+    print("PROGRAM FUNCTION COMMENCED!")  # Debugging
     if(error_flag == False):
-        #cursor = 0  # Reset for reuse
-        #tokens = []  # Reset for reuse
+        # cursor = 0  # Reset for reuse
+        # tokens = []  # Reset for reuse
         print(f"[For Parser() in helper]Cursor's final value: {cursor}")
         return "ALL GOOD!"
     else:
-        return f"Error matching token: {tokens[cursor]}!"
+        return f"SYNTAX ERROR on line #{cursor + 1}"
 
 
 def GetPlainTextFromFile(FileName):
