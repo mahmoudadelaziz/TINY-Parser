@@ -30,12 +30,13 @@ def CheckSyntax():
 def Match(expectedToken):
     global cursor
     # note: token is the current tokens[index] the parser's global cursor is pointing at
-    if(tokens[cursor][1] == expectedToken):
-        cursor += 1         # Keep moving forward!
-    elif(tokens[cursor][0] == expectedToken):
-        cursor += 1
-    else:
-        DeclareError()
+    if((cursor < (len(tokens)-1))): # index safeguard (Debugging)
+        if(tokens[cursor][1] == expectedToken):
+            cursor += 1         # Keep moving forward!
+        elif(tokens[cursor][0] == expectedToken):
+            cursor += 1
+        else:
+            DeclareError()
 
 
 def MulOp():
@@ -157,20 +158,21 @@ def AssignStmt():
 
 def Stmt():
     # statement --> if_stmt | repeat_stmt | assign_stmt | read_stmt | write_stmt
-    if((tokens[cursor][1] == "IDENTIFIER") & (tokens[cursor+1][1] == "ASSIGN")):
-        print(f"Why is the program here at #{cursor}?!") # Debugging. It should be at 3
-        AssignStmt()
-    elif(tokens[cursor][1] == "IF"):
-        IfStmt()
-    elif(tokens[cursor][1] == "REPEAT"):
-        RepeatStmt()
-    elif(tokens[cursor][1] == "READ"):
-        ReadStmt()
-    elif(tokens[cursor][1] == "WRITE"):
-        # THE PROBLEM NOW: THE CODE DOES NOT ENTER THIS CONDITION BODY
-        WriteStmt()
-    else:
-        print(f"Stmt() FAILED at cursor #{cursor}")
+    if((cursor < (len(tokens)-1))): # index safeguard (Debugging)
+        if((tokens[cursor][1] == "IDENTIFIER") & (tokens[cursor+1][1] == "ASSIGN")):
+            print(f"Why is the program here at #{cursor}?!") # Debugging. It should be at 3
+            AssignStmt()
+        elif(tokens[cursor][1] == "IF"):
+            IfStmt()
+        elif(tokens[cursor][1] == "REPEAT"):
+            RepeatStmt()
+        elif(tokens[cursor][1] == "READ"):
+            ReadStmt()
+        elif(tokens[cursor][1] == "WRITE"):
+            # THE PROBLEM NOW: THE CODE DOES NOT ENTER THIS CONDITION BODY
+            WriteStmt()
+        else:
+            print(f"Stmt() FAILED at cursor #{cursor}")
 
 
 def StmtSequence():
@@ -185,7 +187,9 @@ def StmtSequence():
             Match("END")
         else:
             # THE PROBLEM IS HERE IN THIS FUNCTION
-            print(f"StmtSequence() Failed at cursor #{cursor}")
+            # OR MISSING A SEMICOLON ;
+            DeclareError()
+            print(f"Semicolon missing at cursor #{cursor}")
 
 
 def Program():
