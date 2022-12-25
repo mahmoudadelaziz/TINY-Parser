@@ -99,17 +99,19 @@ def Term():
 def SimpleExp():
     # simple_exp --> term [add_op term]
     Term()
-    if((tokens[cursor][0] == '+') | (tokens[cursor][0] == '-')):
-        AddOp()
-        Term()
+    if((cursor < (len(tokens)-1))): # index safeguard (Debugging)
+        if((tokens[cursor][0] == '+') | (tokens[cursor][0] == '-')):
+            AddOp()
+            Term()
 
 
 def Exp():
     # exp --> simple_exp [ComparisonOp simple_exp]
     SimpleExp()
-    if((tokens[cursor][0] == '<') | (tokens[cursor][0] == '=')):
-        ComparisonOp()
-        SimpleExp()
+    if((cursor < (len(tokens)-1))): # index safeguard (Debugging)
+        if((tokens[cursor][0] == '<') | (tokens[cursor][0] == '=')):
+            ComparisonOp()
+            SimpleExp()
 
 
 def WriteStmt():
@@ -175,14 +177,15 @@ def StmtSequence():
     # stmt_seq --> statement {; statement}
     Stmt()
     #print("STATEMENT PRINTED!")
-    if(tokens[cursor][1] == "SEMICOLON"):  # The problem here?! YES, Most likely
-        Match("SEMICOLON")
-        Stmt()
-    elif(tokens[cursor][1] == "END"):
-        Match("END")
-    else:
-        # THE PROBLEM IS HERE IN THIS FUNCTION
-        print(f"StmtSequence() Failed at cursor #{cursor}")
+    if((cursor < (len(tokens)-1))): # index safeguard (Debugging)
+        if(tokens[cursor][1] == "SEMICOLON"):  # The problem here?! YES, Most likely
+            Match("SEMICOLON")
+            Stmt()
+        elif(tokens[cursor][1] == "END"):
+            Match("END")
+        else:
+            # THE PROBLEM IS HERE IN THIS FUNCTION
+            print(f"StmtSequence() Failed at cursor #{cursor}")
 
 
 def Program():
