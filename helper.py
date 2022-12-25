@@ -7,14 +7,13 @@ import re
 # Global Variables
 cursor = 0  # global cursor (points to the current token)
 error_flag = False  # SyntaxError flag
-# no_errors = 0  # Number of errors detected
-
+error_message = ""
 
 # Functions
-def DeclareError():
-    global error_flag, no_errors
+def DeclareError(Cause):
+    global error_flag, error_message
     error_flag = True
-    no_errors += 1
+    error_message = f"{Cause} on line #{cursor + 1}"
     # Where was the cursor?
     print(f"SYNTAX ERROR on line #{cursor + 1}")
 
@@ -189,8 +188,8 @@ def StmtSequence():
         else:
             # THE PROBLEM IS HERE IN THIS FUNCTION
             # OR MISSING A SEMICOLON ;
-            DeclareError()
-            print(f"Semicolon missing at cursor #{cursor}")
+            DeclareError("Semicolon missing")
+            #print(f"Semicolon missing at cursor #{cursor}")
 
 
 def Program():
@@ -210,7 +209,7 @@ def Parse(LinesEntered):
         print(f"[For Parser() in helper]Cursor's final value: {cursor}")
         return "ALL GOOD!"
     else:
-        return f"SYNTAX ERROR on line #{cursor + 1}"
+        return error_message
 
 
 def GetPlainTextFromFile(FileName):
