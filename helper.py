@@ -4,12 +4,13 @@
 # Imports
 import re
 
-# Some helper functions
+# Global Variables
 cursor = 0  # global cursor (points to the current token)
 error_flag = False  # SyntaxError flag
-no_errors = 0  # Number of errors detected
+# no_errors = 0  # Number of errors detected
 
 
+# Functions
 def DeclareError():
     global error_flag, no_errors
     error_flag = True
