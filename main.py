@@ -67,7 +67,7 @@ class Ui_MainWindow(object):
             self.tokensList = GetTokensListFromPlainText(self.TokensPlainText) # Making list of tokens
             self.SyntaxCheckingResult.setText(Parse(self.tokensList))
             self.update()
-            print(f"[FOR GUI FILE] Cursor standing at #{cursor}")
+            #print(f"[FOR GUI FILE] Cursor standing at #{cursor}")
         # except IndexError:
         #     self.SyntaxCheckingResult.setText(f"Cursor stopped at {str(cursor)}")
         #     print(f"Tokens read: {self.tokensList}")
