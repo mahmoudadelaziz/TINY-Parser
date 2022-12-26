@@ -20,14 +20,6 @@ def DeclareError(Cause):
     print(f"SYNTAX ERROR on line #{cursor + 1}")  # Debugging
 
 
-# def CheckSyntax():
-#     global error_flag
-#     if(error_flag == True):
-#         print("SYNTAX ERROR(S) DETECTED!\n")
-#     else:
-#         print("ALL GOOD!\n")
-
-
 def Match(expectedToken):
     global cursor
     # note: token is the current tokens[index] the parser's global cursor is pointing at
@@ -83,13 +75,12 @@ def Factor():
         Exp()
         Match('CLOSEDBRACKET')
     else:
-        DeclareError()
+        DeclareError("Mismatched Factor ")
         print(f"Expected a factor ")
 
 
 def Term():
     # term --> factor [mul_op factor]
-    # Match(Factor) #?
     Factor()
     if((cursor < (len(tokens)-1))):  # index safeguard (Debugging)
         if((tokens[cursor][0] == '*') | (tokens[cursor][0] == '/')):
@@ -233,7 +224,3 @@ def GetTokensListFromPlainText(ourTokenText):
     tokens = [item.split(r',') for item in tokens]
     tokens = [[item[0].strip(), item[1].strip()] for item in tokens]
     return tokens
-
-
-# Testing Code
-# print("**" * 75)

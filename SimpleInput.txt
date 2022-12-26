@@ -5,5 +5,11 @@ fact, IDENTIFIER
 :=, ASSIGN
 1, NUMBER
 
+-, MINUS
+1, NUMBER
+
+-, MINUS
+1, NUMBER
+
 
 #NOTE: THE CURSOR ARRIVES AT (no of tokens), although the highest available index is (no of tokens-1)...
