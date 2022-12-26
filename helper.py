@@ -10,20 +10,22 @@ error_flag = False  # SyntaxError flag
 error_message = ""
 
 # Functions
+
+
 def DeclareError(Cause):
     global error_flag, error_message
     error_flag = True
     error_message = f"{Cause} on line #{cursor + 1}"
     # Where was the cursor?
-    print(f"SYNTAX ERROR on line #{cursor + 1}")
+    print(f"SYNTAX ERROR on line #{cursor + 1}")  # Debugging
 
 
-def CheckSyntax():
-    global error_flag
-    if(error_flag == True):
-        print("SYNTAX ERROR(S) DETECTED!\n")
-    else:
-        print("ALL GOOD!\n")
+# def CheckSyntax():
+#     global error_flag
+#     if(error_flag == True):
+#         print("SYNTAX ERROR(S) DETECTED!\n")
+#     else:
+#         print("ALL GOOD!\n")
 
 
 def Match(expectedToken):
@@ -35,7 +37,7 @@ def Match(expectedToken):
         elif(tokens[cursor][0] == expectedToken):
             cursor += 1
         else:
-            DeclareError()
+            DeclareError(f"Expected {expectedToken} ")
 
 
 def MulOp():
@@ -82,14 +84,13 @@ def Factor():
         Match('CLOSEDBRACKET')
     else:
         DeclareError()
-        print(f"Failed to match Factor at index {cursor}: {tokens[cursor]}")
+        print(f"Expected a factor ")
 
 
 def Term():
     # term --> factor [mul_op factor]
     # Match(Factor) #?
     Factor()
-    print(f"The cursor now is at {cursor}")  # Debugging
     if((cursor < (len(tokens)-1))):  # index safeguard (Debugging)
         if((tokens[cursor][0] == '*') | (tokens[cursor][0] == '/')):
             MulOp()
@@ -159,8 +160,6 @@ def Stmt():
     # statement --> if_stmt | repeat_stmt | assign_stmt | read_stmt | write_stmt
     if((cursor < (len(tokens)-1))):  # index safeguard (Debugging)
         if((tokens[cursor][1] == "IDENTIFIER") & (tokens[cursor+1][1] == "ASSIGN")):
-            # Debugging. It should be at 3
-            print(f"Why is the program here at #{cursor}?!")
             AssignStmt()
         elif(tokens[cursor][1] == "IF"):
             IfStmt()
@@ -188,8 +187,8 @@ def StmtSequence():
         else:
             # THE PROBLEM IS HERE IN THIS FUNCTION
             # OR MISSING A SEMICOLON ;
-            DeclareError("Semicolon missing")
-            #print(f"Semicolon missing at cursor #{cursor}")
+            DeclareError("Semicolon missing ")
+            # print(f"Semicolon missing at cursor #{cursor}")
 
 
 def Program():
@@ -200,16 +199,19 @@ def Program():
 def Parse(LinesEntered):
     global tokens
     tokens = LinesEntered
-    print("GOT HERE BEFORE PROGRAM()!")  # Debugging -- The code does get here!
-    Program()
-    print("PROGRAM FUNCTION COMMENCED!")  # Debugging
-    if(error_flag == False):
-        # cursor = 0  # Reset for reuse
-        # tokens = []  # Reset for reuse
-        print(f"[For Parser() in helper]Cursor's final value: {cursor}")
-        return "ALL GOOD!"
+    if(len(tokens) == 0):
+        return "Nothing was entered!"
+    elif(len(tokens) == 1):
+        return "The TINY program should have at least two tokens!"
     else:
-        return error_message
+        Program()
+        if(error_flag == False):
+            # cursor = 0  # Reset for reuse
+            # tokens = []  # Reset for reuse
+            print(f"[For Parser() in helper]Cursor's final value: {cursor}")
+            return "ALL GOOD!"
+        else:
+            return error_message
 
 
 def GetPlainTextFromFile(FileName):
