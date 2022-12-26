@@ -1,9 +1,16 @@
-// The Round Table
-digraph {
-	A [label="King Arthur"]
-	B [label="Sir Bedevere the Wise"]
-	L [label="Sir Lancelot the Brave"]
-	A -> B
-	A -> L
-	B -> L [constraint=false]
+// Team Composition
+graph {
+	A [label="Our Team"]
+	B [label=Aziz]
+	C [label=Dawoud]
+	D [label=Islam]
+	E [label=George]
+	F [label=Moamen]
+	G [label=Amr]
+	A -- B
+	A -- C
+	A -- D
+	A -- E
+	A -- F
+	A -- G
 }

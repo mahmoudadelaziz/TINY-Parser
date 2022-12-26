@@ -1,11 +1,14 @@
 import graphviz
 
-dot = graphviz.Digraph(comment='The Round Table')
+shape = graphviz.Graph(comment="Team Composition")
 
-dot.node('A', 'King Arthur')
-dot.node('B', 'Sir Bedevere the Wise')
-dot.node('L', 'Sir Lancelot the Brave')
-dot.edges(['AB', 'AL'])
-dot.edge('B', 'L', constraint='false')
+shape.node("A", "Our Team")
+shape.node("B", "Aziz")
+shape.node("C", "Dawoud")
+shape.node("D", "Islam")
+shape.node("E", "George")
+shape.node("F", "Moamen")
+shape.node("G", "Amr")
+shape.edges(['AB', 'AC', "AD", 'AE', "AF", "AG"])
 
-dot.render('testing.png', view=True)
+shape.render('testing.png', view=True)
